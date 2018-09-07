@@ -1,20 +1,19 @@
-module.exports = {
-  _onKeyPress: (e) => {
+const methods = {
+  _onKeyPress: function(e) {
     if (e.key === 'Enter') {
-      this.addItem(e.target.value);
+      methods.addItem.bind(this)(e.target.value);
     }
   },
 
-  _onAdd: (e) => {
-    this.addItem(this._inputRef.current.value);
+  _onAdd: function(e) {
+    methods.addItem.bind(this)(this._inputRef.current.value);
   },
 
-  _onPlusClick: (e) => {
-    console.log('--------------');
+  _onPlusClick: function(e) {
     this.setState({addMode: true});
   },
 
-  _onStrikeClick: (e) => {
+  _onStrikeClick: function(e) {
     //const id = e.target.id.replace(/^txt(.+$)/$1/);
     const id = e.target.id.replace(/^txt(.+)$/, "$1");
     let items = [ ...this.state.items ];
@@ -23,7 +22,7 @@ module.exports = {
     this.setState({items});
   },
 
-  _onCheck: (e) => {
+  _onCheck: function(e) {
     let items = [ ...this.state.items ];
     const id = e.target.id.replace(/^cbox(.+)$/, "$1");
     items[parseInt(id, 10)].checked
@@ -31,12 +30,12 @@ module.exports = {
     this.setState({items});
   },
 
-  _onXClick: (e) => {
+  _onXClick: function(e) {
     const id = e.target.id.replace(/^x(.+)$/, "$1");
-    this.deleteItem(id);
+    methods.deleteItem.bind(this)(id);
   },
 
-  deleteItem: (id) => {
+  deleteItem: function(id) {
     const items = this.state.items.filter(item => {
       return parseInt(item.id, 10) !== parseInt(id, 10);
     });
@@ -45,14 +44,14 @@ module.exports = {
     });
   },
 
-  addItem: (text) => {
+  addItem: function(text) {
     if (!text) {
       this.setState({
         addMode: false
       });
       return;
     }
-    const newId = this.highestId(this.state.items) + 1;
+    const newId = methods.highestId.bind(this)(this.state.items) + 1;
     
     this.setState({
       addMode: false,
@@ -65,9 +64,15 @@ module.exports = {
     })
   },
 
-  highestId: (arr) => {
+  highestId: function(arr) {
     return arr.reduce((accumulator, currentElm) => {
       return currentElm.id > accumulator ? currentElm.id : accumulator;
     }, -1 );
+  },
+
+  storeItems(items) {
+    localStorage.setItem('myTodoList', JSON.stringify(items));
   }
 };
+
+export default methods;
