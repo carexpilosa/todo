@@ -22,20 +22,7 @@ class App extends Component {
     super(props);
     this.state = {
       addMode: false,
-      items: [
-        {
-          text: 'Blumen gießen',
-          checked: true,
-          strikethrough: false,
-          id: 0
-        },
-        {
-          text: 'Bücher lesen',
-          checked: true,
-          strikethrough: false,
-          id: 1
-        }
-      ]
+      items: JSON.parse(localStorage.getItem('myTodoList')) || []
     };
     this._inputRef = React.createRef();
   }
@@ -104,7 +91,8 @@ class App extends Component {
     console.log(id);
     let items = [ ...this.state.items ];
     items[parseInt(id, 10)].strikethrough
-      = ! items[parseInt(id, 10)].strikethrough
+      = ! items[parseInt(id, 10)].strikethrough;
+    this.storeItems(items);
     this.setState({items});
   }
 
@@ -113,6 +101,7 @@ class App extends Component {
     const id = e.target.id.replace(/^cbox(.+)$/, "$1");
     items[parseInt(id, 10)].checked
       = ! items[parseInt(id, 10)].checked;
+    this.storeItems(items);
     this.setState({items});
   }
 
@@ -125,6 +114,7 @@ class App extends Component {
     const items = this.state.items.filter(item => {
       return parseInt(item.id, 10) !== parseInt(id, 10);
     });
+    this.storeItems(items);
     this.setState({
       items
     });
@@ -138,22 +128,31 @@ class App extends Component {
       return;
     }
     const newId = this.highestId(this.state.items) + 1;
-    
-    this.setState({
-      addMode: false,
-      items: [ ...this.state.items, {
+    const newItems = [
+      ...this.state.items,
+      {
         text,
         checked: true,
         strikethrough: false,
         id: newId
-      }]
-    })
+      }];
+
+    this.storeItems(newItems);
+    
+    this.setState({
+      addMode: false,
+      items: newItems
+    });
   }
 
   highestId(arr) {
     return arr.reduce((accumulator, currentElm) => {
       return currentElm.id > accumulator ? currentElm.id : accumulator;
     }, -1 );
+  }
+
+  storeItems(items) {
+    localStorage.setItem('myTodoList', JSON.stringify(items));
   }
 }
 
