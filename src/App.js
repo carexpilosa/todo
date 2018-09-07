@@ -2,6 +2,20 @@ import React, { Component } from 'react';
 import Item from './Item';
 import logo from './logo.svg';
 import './App.css';
+import {
+  _onKeyPress, 
+  _onAdd,
+  _onPlusClick,
+  _onStrikeClick, 
+  _onCheck,
+  _onXClick,
+  deleteItem,
+  addItem,
+  highestId
+} from './appMethods';
+
+   
+  
 
 class App extends Component {
   constructor(props) {
@@ -80,6 +94,7 @@ class App extends Component {
   }
 
   _onPlusClick(e) {
+    console.log('--');
     this.setState({addMode: true});
   }
 

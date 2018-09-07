@@ -10,6 +10,7 @@ module.exports = {
   },
 
   _onPlusClick: (e) => {
+    console.log('--------------');
     this.setState({addMode: true});
   },
 
