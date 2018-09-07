@@ -14,11 +14,11 @@ const methods = {
   },
 
   _onStrikeClick: function(e) {
-    //const id = e.target.id.replace(/^txt(.+$)/$1/);
     const id = e.target.id.replace(/^txt(.+)$/, "$1");
     let items = [ ...this.state.items ];
     items[parseInt(id, 10)].strikethrough
-      = ! items[parseInt(id, 10)].strikethrough
+      = ! items[parseInt(id, 10)].strikethrough;
+    methods.storeItems(items);
     this.setState({items});
   },
 
@@ -27,6 +27,7 @@ const methods = {
     const id = e.target.id.replace(/^cbox(.+)$/, "$1");
     items[parseInt(id, 10)].checked
       = ! items[parseInt(id, 10)].checked;
+    methods.storeItems(items);
     this.setState({items});
   },
 
@@ -39,6 +40,7 @@ const methods = {
     const items = this.state.items.filter(item => {
       return parseInt(item.id, 10) !== parseInt(id, 10);
     });
+    methods.storeItems(items);
     this.setState({
       items
     });
@@ -52,16 +54,20 @@ const methods = {
       return;
     }
     const newId = methods.highestId.bind(this)(this.state.items) + 1;
-    
-    this.setState({
-      addMode: false,
-      items: [ ...this.state.items, {
+    const items = [
+      ...this.state.items, {
         text,
         checked: true,
         strikethrough: false,
         id: newId
-      }]
-    })
+      }
+    ];
+
+    methods.storeItems(items);
+    this.setState({
+      addMode: false,
+      items
+    });
   },
 
   highestId: function(arr) {
