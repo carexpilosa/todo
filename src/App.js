@@ -23,6 +23,7 @@ class App extends Component {
         }
       ]
     };
+    this._inputRef = React.createRef();
   }
   render() {
     return (
@@ -38,7 +39,7 @@ class App extends Component {
               <Item
                 key={item.id}
                 item={item}
-                onClick={this._onClick.bind(this)}
+                onClick={this._onStrikeClick.bind(this)}
                 onCheck={this._onCheck.bind(this)}
                 onXClick={this._onXClick.bind(this)}
               />
@@ -52,6 +53,7 @@ class App extends Component {
                 <input id="addInput" type="text"
                   autoFocus
                   onKeyPress={this._onKeyPress.bind(this)}
+                  ref={this._inputRef}
                 ></input>
                 <button onClick={this._onAdd.bind(this)}>add</button>
               </div>
@@ -74,30 +76,34 @@ class App extends Component {
   }
 
   _onAdd(e) {
-    this.addItem(e.target.previousSibling.value);
+    this.addItem(this._inputRef.current.value);
   }
 
   _onPlusClick(e) {
     this.setState({addMode: true});
   }
 
-  _onClick(e) {
+  _onStrikeClick(e) {
+    //const id = e.target.id.replace(/^txt(.+$)/, "$1");
+    const id = e.target.id.replace(/^txt(.+)$/, "$1");
+    console.log(id);
     let items = [ ...this.state.items ];
-    items[parseInt(e.target.parentElement.id, 10)].strikethrough
-      = ! items[parseInt(e.target.parentElement.id, 10)].strikethrough
+    items[parseInt(id, 10)].strikethrough
+      = ! items[parseInt(id, 10)].strikethrough
     this.setState({items});
   }
 
   _onCheck(e) {
     let items = [ ...this.state.items ];
-    items[parseInt(e.target.parentElement.id, 10)].checked
-      = ! items[parseInt(e.target.parentElement.id, 10)].checked;
+    const id = e.target.id.replace(/^cbox(.+)$/, "$1");
+    items[parseInt(id, 10)].checked
+      = ! items[parseInt(id, 10)].checked;
     this.setState({items});
   }
 
   _onXClick(e) {
-    console.log(e.target.parentElement.id);
-    this.deleteItem(e.target.parentElement.id);
+    const id = e.target.id.replace(/^x(.+)$/, "$1");
+    this.deleteItem(id);
   }
 
   deleteItem(id) {
@@ -132,7 +138,7 @@ class App extends Component {
   highestId(arr) {
     return arr.reduce((accumulator, currentElm) => {
       return currentElm.id > accumulator ? currentElm.id : accumulator;
-    }, 0 );
+    }, -1 );
   }
 }
 
