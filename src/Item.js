@@ -6,15 +6,16 @@ class Item extends React.Component {
     const style = item.strikethrough
       ? {textDecoration: 'line-through'} : {};
     return (
-      <div key={item.id} id={item.id}>
+      <React.Fragment key={item.id} id={item.id}>
+      <div>
         <input
           type="checkbox"
           defaultChecked={item.checked}
           onClick={this.props.onCheck}>
-        </input>
-        <span style={style} onClick={this.props.onClick}>{item.text}</span>&nbsp;
-        <span style={{color: 'red', cursor: 'pointer'}} onClick={this.props.onXClick}>x</span>
-      </div>
+        </input></div>
+        <div style={style} onClick={this.props.onClick}>{item.text}</div>
+        <div style={{color: 'red', cursor: 'pointer'}} onClick={this.props.onXClick}>x</div>
+      </React.Fragment>
     );
 
   }

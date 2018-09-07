@@ -28,9 +28,10 @@ class App extends Component {
     return (
       <div className="App" style={{
         textAlign: 'left', marginLeft: '20px',
-        display: 'grid'
+        display: 'grid',
+        gridTemplateColumns: '30px 200px 30px'
         }}>
-        <h4>Todo-List</h4>
+        <div></div><div><h4>Todo-List</h4></div><div></div>
         {
           this.state.items.map((item) => {
             return (
@@ -46,21 +47,21 @@ class App extends Component {
         }
         {
           this.state.addMode
-            ? <span>
+            ? <div>
                 <br/><br/>
                 <input id="addInput" type="text"
                   autoFocus
                   onKeyPress={this._onKeyPress.bind(this)}
                 ></input>
                 <button onClick={this._onAdd.bind(this)}>add</button>
-              </span>
+              </div>
             :
-              <span style={{
+              <div style={{
                 fontSize: '30px',
                 cursor: 'pointer'
               }} id="plus"
                 onClick={this._onPlusClick.bind(this)}
-              ><br/><br/>+</span>
+              ><br/><br/>+</div>
         }
       </div>
     );
