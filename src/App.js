@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Item from './Item';
-import logo from './logo.svg';
-import './App.css';
 import methods from './appMethods';
 
 const {

@@ -1,4 +1,6 @@
 const methods = {
+  // these functions have to be NO arrow functions because this has to be
+  // bound when calling them
   _onKeyPress: function(e) {
     if (e.key === 'Enter') {
       methods.addItem.bind(this)(e.target.value);
@@ -15,18 +17,24 @@ const methods = {
 
   _onStrikeClick: function(e) {
     const id = e.target.id.replace(/^txt(.+)$/, "$1");
-    let items = [ ...this.state.items ];
-    items[parseInt(id, 10)].strikethrough
-      = ! items[parseInt(id, 10)].strikethrough;
+    const items = this.state.items.map(item => {
+      if (parseInt(item.id, 10) === parseInt(id, 10)) {
+        item.strikethrough = ! item.strikethrough;
+      }
+      return item;
+    });
     methods.storeItems(items);
     this.setState({items});
   },
 
   _onCheck: function(e) {
-    let items = [ ...this.state.items ];
     const id = e.target.id.replace(/^cbox(.+)$/, "$1");
-    items[parseInt(id, 10)].checked
-      = ! items[parseInt(id, 10)].checked;
+    const items = this.state.items.map(item => {
+      if (parseInt(item.id, 10) === parseInt(id, 10)) {
+        item.checked = ! item.checked;
+      }
+      return item;
+    });
     methods.storeItems(items);
     this.setState({items});
   },
