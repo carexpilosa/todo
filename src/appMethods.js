@@ -84,8 +84,47 @@ const methods = {
     }, -1 );
   },
 
-  storeItems(items) {
+  storeItems: function(items) {
     localStorage.setItem('myTodoList', JSON.stringify(items));
+  },
+
+  sortByChecked: function() {
+    const items = this.state.items.sort((a, b) => {
+      return this.state.sortCheckedDesc
+        ? a.checked
+        : !a.checked;
+    });
+
+    this.setState({
+      items,
+      sortCheckedDesc: this.state.sortCheckedDesc ? false : true
+    });
+  },
+
+  sortByText: function() {
+    console.log('sortByText');
+    const items = this.state.items.sort((a, b) => {
+      return this.state.sortTextAsc
+        ? a.text.toLowerCase() > b.text.toLowerCase()
+        : a.text.toLowerCase() < b.text.toLowerCase();
+    });
+    this.setState({
+      items,
+      sortTextAsc: this.state.sortTextAsc ? false : true
+    });
+  },
+
+  sortByStrikeThrough: function() {
+    const items = this.state.items.sort((a, b) => {
+      return this.state.sortStrikeThrough
+        ? a.strikethrough
+        : !a.strikethrough;
+    });
+
+    this.setState({
+      items,
+      sortStrikeThrough: this.state.sortStrikeThrough ? false : true
+    });
   }
 };
 

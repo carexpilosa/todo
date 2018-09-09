@@ -8,18 +8,21 @@ const {
   _onPlusClick,
   _onStrikeClick, 
   _onCheck,
-  _onXClick
+  _onXClick,
+  sortByChecked,
+  sortByText,
+  sortByStrikeThrough
 } = methods; 
-
-   
-  
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       addMode: false,
-      items: JSON.parse(localStorage.getItem('myTodoList')) || []
+      items: JSON.parse(localStorage.getItem('myTodoList')) || [],
+      sortTextAsc: undefined,
+      sortCheckedDesc: undefined,
+      sortStrikeThrough: undefined
     };
     this._inputRef = React.createRef();
   }
@@ -31,6 +34,17 @@ class App extends Component {
         gridTemplateColumns: '30px 200px 30px'
         }}>
         <div></div><div><h4>Todo-List</h4></div><div></div>
+        
+        <div style={{cursor: 'pointer'}}
+          onClick={sortByChecked.bind(this)}>CH</div>
+        <div>
+          <span style={{cursor: 'pointer'}}
+            onClick={sortByText.bind(this)}>Text</span>
+            &nbsp;<br/>&nbsp;
+          <span style={{cursor: 'pointer', textDecoration: 'line-through'}}
+            onClick={sortByStrikeThrough.bind(this)}>&nbsp;&nbsp;&nbsp;</span>
+        </div>
+        <div></div>
         {
           this.state.items.map((item) => {
             return (
